@@ -1,18 +1,18 @@
-module API
-  module V1
+module V1
+  module Resources
     class Products < Grape::API
       resource :products do
         desc 'Get all products'
         get do
           products = Products.all
-          present products, with: APIEntities::Product
+          present products, with: V1::Entities::Product
         end
 
         desc 'Get a specific product'
         route_param :id do
           get do
             product = Product.find(params[:id])
-            present product, with: APIEntities::Product
+            present product, with: V1::Entities::Product
           end
         end
 
@@ -25,7 +25,7 @@ module API
         post do
           product = Product.new(declared(params, include_missing: false))
           if product.save
-            present product, with: APIEntities::Product
+            present product, with: V1::Entities::Product
           else
             error!(product.errors.full_messages.join(', '), 400)
           end
@@ -38,7 +38,7 @@ module API
         put '/:id' do
           product = Product.find(params[:id])
           if product.update(declared(params, include_missing: false))
-            present product, with: APIEntities::Product
+            present product, with: V1::Entities::Product
           else
             error!(product.errors.full_messages.join(', '), 400)
           end

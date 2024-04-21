@@ -1,18 +1,18 @@
-module API
-  module V1
+module V1
+  module Resources
     class Orders < Grape::API
       resource :orders do
         desc 'Get all orders'
         get do
           orders = Order.all
-          present orders, with: APIEntities::Order
+          present orders, with: V1::Entities::Order
         end
 
         desc 'Get a specific order'
         route_param :id do
           get do
             order = Order.find(params[:id])
-            present order, with: APIEntities::Order
+            present order, with: V1::Entities::Order
           end
         end
 
@@ -32,7 +32,7 @@ module API
           end
 
           if order.save
-            present order, with: APIEntities::Order
+            present order, with: V1::Entities::Order
           else
             error!(order.errors.full_messages.join(', '), 400)
           end
@@ -57,7 +57,7 @@ module API
           end
 
           if order.save
-            present order, with: APIEntities::Order
+            present order, with: V1::Entities::Order
           else
             error!(order.errors.full_messages.join(", "), 400)
           end

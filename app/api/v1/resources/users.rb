@@ -1,5 +1,5 @@
-module API
-  module V1
+module V1
+  module Resources
     class Users < Grape::API
       resource :users do
         desc 'Create a new user'
@@ -10,14 +10,14 @@ module API
         end
         post do
           user = User.new(declared(params, include_missing: false))
-
+  
           if user.save
-            present user, with: APIEntities::User
+            present user, with: V1::Entities::User
           else
             error!(user.errors.full_messages.join(', '), 400)
           end
         end
-
+  
         desc 'Sign in a user'
         params do
           requires :email, type: String
